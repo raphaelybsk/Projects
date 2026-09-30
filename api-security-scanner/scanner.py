@@ -1,72 +1,102 @@
 import requests
+import json
 
-# json with bubble's login info (email and password)
-bubble_login_info = {
-    "email":"bubble@gmail.com",
-    "password":"Bubble123#"
-}
+# POST request to get a login token given an email and a password 
+def login(email, password):
+    login_info = {"email":email, "password":password}
+    response = requests.post("http://localhost:8888/identity/api/auth/login", json=login_info)
+    if response.status_code == 200:
+        return response.json()["token"] 
+    else:
+        return None
 
-# json with bubble2's login info (email and password)
-bubble2_login_info = {
-    "email":"bubble2@gmail.com",
-    "password":"Bubble123#"
-}
+# bubble login token
+bubble_token = login("bubble@gmail.com", "Bubble123#")
+# bubble2 login token
+bubble2_token = login("bubble2@gmail.com", "Bubble123#")
 
-# post request to login with bubble's account
-bubble_response = requests.post("http://localhost:8888/identity/api/auth/login", json=bubble_login_info)
-# login status code
-print("POST Bubble Login Status Code: " + str(bubble_response.status_code))
+# bubble header with his login token
+bubble_header = {"Authorization": "Bearer " + bubble_token}
+# bubble2 header with his login token
+bubble2_header = {"Authorization": "Bearer " + bubble2_token}
 
-# if login was successful
-if bubble_response.status_code == 200:
-    # we extract the login token to use in the header and get access to endpoints with token authorization
-    bubble_token = bubble_response.json()["token"] # or token = response.json().get("token")
+# GET request to get user's dashboard info given a header
+def dashboard_info(user_header):
+    response = requests.get("http://localhost:8888/identity/api/v2/user/dashboard", headers=user_header)
+    if response.status_code == 200:
+        return "User's Dashboard: " + str(response.json())
+    else:
+        return None
 
-    # create the header with the extracted login token
-    headers_bubble = {
-        "Authorization":"Bearer " + bubble_token
-    }
-    # use the token on GET requests to the dashboard (contains info about the user)
-    getResponse = requests.get("http://localhost:8888/identity/api/v2/user/dashboard", headers=headers_bubble)
-    print("GET Bubble Dashboard Status Code: " + str(getResponse.status_code))
-    # print out the info
-    print("GET Bubble Info Dashboard: " + str(getResponse.json()))
-    print()
-else:
-    print("POST Login failed!")
+# bubble's info
+# bubble_info = dashboard_info(bubble_header)
+# bubble2's info
+# bubble2_info = dashboard_info(bubble2_header)
 
-# post request to login with bubble2's account
-bubble2_response = requests.post("http://localhost:8888/identity/api/auth/login", json=bubble2_login_info)
-print("POST Bubble2 Login Status Code: " + str(bubble2_response.status_code))
+# GET request to get an user's vehicle UUID given his header 
+def vehicle_uuid(user_header):
+    response = requests.get("http://localhost:8888/identity/api/v2/vehicle/vehicles", headers=user_header)
+    if response.status_code == 200:
+        return str(response.json()[0]["uuid"])
+    else:
+        return None
 
-if bubble2_response.status_code == 200:
-    # extract the bubble2's login token
-    bubble2_token = bubble2_response.json()["token"] # or token = response.json().get("token")
+# bubble2's vehicle UUID
+bubble2_vehicle_uuid = vehicle_uuid(bubble2_header)
 
-    headers_bubble2 = {
-        "Authorization":"Bearer " + bubble2_token
-    }
-    # GET request to bubble2's info
-    getResponse = requests.get("http://localhost:8888/identity/api/v2/user/dashboard", headers=headers_bubble2)
-    print("GET Bubble2 Dashboard Status Code: " + str(getResponse.status_code))
-    # print out bubble2's info
-    print("GET Bubble2 Info Dashboard: " + str(getResponse.json()))
-    print()
+# GET request to test BOLA (broken object level authorization) - try to get someone elses vehicle's info while logged in in your own account
+def bola(user_header, vehicle_uuid):
+    response = requests.get("http://localhost:8888/identity/api/v2/vehicle/" + vehicle_uuid + "/location", headers=user_header)
+    # print(response.status_code)
+    if response.status_code == 200:
+        return {"check": "BOLA", "endpoint": "/vehicle", "vulnerable": True, "status_code": response.status_code, "details":response.json()}
+    else:
+        return {"check": "BOLA", "endpoint": "/vehicle", "vulnerable": False, "status_code": response.status_code}
 
-    # GET request for the info about bubble2's vehicles (specifically the UUID) for BOLA test
-    vehicles_response = requests.get("http://localhost:8888/identity/api/v2/vehicle/vehicles", headers=headers_bubble2)
-    bubble2_vehicles = vehicles_response.json()
-    # extract and print out UUID from the GET response
-    bubble2_vehicles_uuid = bubble2_vehicles[0]["uuid"]
-    print("GET Bubble2 vehicle UUID: " + str(bubble2_vehicles_uuid) + "\n")
-else:
-    print("POST Login failed!")
+# GET request to test if we can get someone's info without being logged in (no headers)
+def broken_auth():
+    response = requests.get("http://localhost:8888/identity/api/v2/user/dashboard", headers={})
+    # print(response.status_code)
+    if response.status_code == 200:
+        return {"check": "Broken Authentication", "endpoint": "/dashboard", "vulnerable": True, "status_code": response.status_code}
+    else:
+        return {"check": "Broken Authentication", "endpoint": "/dashboard", "vulnerable": False, "status_code": response.status_code}
 
-# BOLA (broken object level authorization) test: send a GET request with bubble's header (login token), but for the bubble2's vehicle info
-bola_url = "http://localhost:8888/identity/api/v2/vehicle/" + bubble2_vehicles_uuid + "/location"
-bola_response = requests.get(bola_url, headers=headers_bubble)
-if bola_response.status_code == 200:
-    print("Vulnerable!\n")
-    print(bola_response.json())
-else:
-    print("Not vulnerable!")
+# POST request to test if there is a limit of failed attempts to login
+def rate_limiting(attempts):
+    bad_login = {"email":"bubble@gmail.com", "password":"wrongPassword"}
+    blocked = False
+    for i in range(attempts):
+        response = requests.post("http://localhost:8888/identity/api/auth/login", json=bad_login)
+        if response.status_code == 429:
+            blocked = True
+            break
+
+    return {"check": "Rate Limiting", "endpoint": "/login", "login attempts":attempts, "vulnerable": not blocked, "status_code": response.status_code}
+
+def run_all_tests():
+    results = []
+    results.append(broken_auth())
+    # getting bubble2's vehicle info logged in as bubble (bubble's header)
+    results.append(bola(bubble_header, bubble2_vehicle_uuid))
+    # testing 50 failed login attempts to see if it's possible to try as many times as we want (bruteforcing possible)
+    results.append(rate_limiting(50))
+    return results
+
+all_results = run_all_tests()
+
+def print_report(results):
+    print("\n=== SCAN REPORT ===\n")
+    for result in results:
+        status = "VULNERABLE" if result["vulnerable"] else "OK"
+        print(f"[{status}] {result['check']} — {result['endpoint']} (status {result['status_code']})")
+    total = len(results)
+    vulnerable_count = sum(1 for r in results if r["vulnerable"])
+    print(f"\n{vulnerable_count}/{total} checks found vulnerable.\n")
+
+def save_report(results, filename="report.json"):
+    with open(filename, "w") as f:
+        json.dump(results, f, indent=4)
+
+print_report(all_results)
+save_report(all_results)

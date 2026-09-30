@@ -1,0 +1,31 @@
+[
+    {
+        "check": "Broken Authentication",
+        "endpoint": "/dashboard",
+        "vulnerable": false,
+        "status_code": 404
+    },
+    {
+        "check": "BOLA",
+        "endpoint": "/vehicle",
+        "vulnerable": true,
+        "status_code": 200,
+        "details": {
+            "carId": "bf79c67d-aded-422c-9cb0-04f8091102aa",
+            "vehicleLocation": {
+                "id": 2,
+                "latitude": "31.284788",
+                "longitude": "-92.471176"
+            },
+            "fullName": "bubble two",
+            "email": "bubble2@gmail.com"
+        }
+    },
+    {
+        "check": "Rate Limiting",
+        "endpoint": "/login",
+        "login attempts": 50,
+        "vulnerable": true,
+        "status_code": 401
+    }
+]
