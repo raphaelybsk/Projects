@@ -22,4 +22,4 @@ A CLI tool that scans repositories and full Git history for accidentally committ
 
 ## Purpose
 
-This repository serves as a technical portfolio demonstrating engineering ability across application security, DevSecOps automation, and systems-level programming — the range of skills relevant to both software engineering and cybersecurity roles.
+This repository serves as a technical portfolio demonstrating engineering ability across application security, DevSecOps automation, and systems-level programming.
