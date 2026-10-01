@@ -1,6 +1,6 @@
 # Security & Systems Engineering Portfolio
 
-A collection of hands-on projects built to develop real engineering depth in application security, DevSecOps, and backend/systems programming — built while transitioning from a Computer Science degree into a cybersecurity career.
+A collection of hands-on projects built to develop real engineering depth in application security, DevSecOps, and backend/systems programming, built while transitioning from a Computer Science degree into a cybersecurity career.
 
 Each project is designed to demonstrate a specific, real-world engineering problem rather than follow a tutorial: from finding vulnerabilities in live APIs to building a database engine from first principles.
 
