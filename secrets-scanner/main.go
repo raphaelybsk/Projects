@@ -158,7 +158,7 @@ func scanFile(path string) []Finding {
 		return nil // ignore if we cannot read it
 	}
 
-	// Ficheiro binário? Procura um byte 0 nos primeiros 8000 bytes. ???
+	// Binary file? Look for a 0 byte in the first 8000 bytes
 	head := data
 	if len(head) > 8000 {
 		head = head[:8000]
