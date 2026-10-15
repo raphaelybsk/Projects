@@ -1,0 +1,51 @@
+[
+  {
+    "source": "ssh",
+    "source_ip": "198.51.100.42",
+    "event_type": "login_failed",
+    "severity": "medium",
+    "message": "Failed login attempt 1 for alice"
+  },
+  {
+    "source": "ssh",
+    "source_ip": "198.51.100.42",
+    "event_type": "login_failed",
+    "severity": "medium",
+    "message": "Failed login attempt 2 for alice"
+  },
+  {
+    "source": "ssh",
+    "source_ip": "198.51.100.42",
+    "event_type": "login_failed",
+    "severity": "medium",
+    "message": "Failed login attempt 3 for alice"
+  },
+  {
+    "source": "ssh",
+    "source_ip": "198.51.100.42",
+    "event_type": "login_failed",
+    "severity": "medium",
+    "message": "Failed login attempt 4 for alice"
+  },
+  {
+    "source": "ssh",
+    "source_ip": "198.51.100.42",
+    "event_type": "login_failed",
+    "severity": "medium",
+    "message": "Failed login attempt 5 for alice"
+  },
+  {
+    "source": "firewall",
+    "source_ip": "203.0.113.10",
+    "event_type": "connection_blocked",
+    "severity": "high",
+    "message": "Connection to port 22 was blocked"
+  },
+  {
+    "source": "web-app",
+    "source_ip": "192.0.2.10",
+    "event_type": "login_success",
+    "severity": "informational",
+    "message": "User bob logged in successfully"
+  }
+]

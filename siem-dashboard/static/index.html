@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIEM Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>SIEM Dashboard</h1>
+        <p>A simple project for collecting logs and finding repeated failed logins.</p>
+    </header>
+
+    <main>
+        <p id="status" role="status"></p>
+
+        <section>
+            <h2>Events</h2>
+            <div class="controls">
+                <label for="severity-filter">Severity</label>
+                <select id="severity-filter">
+                    <option value="">All</option>
+                    <option value="informational">Informational</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="critical">Critical</option>
+                </select>
+                <button id="refresh-button" type="button">Refresh</button>
+            </div>
+            <p id="event-count">No events loaded.</p>
+            <p class="note">The table shows up to 100 matching events, newest first. Times are UTC.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th><th>Source</th><th>IP address</th>
+                            <th>Event type</th><th>Severity</th><th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="event-list"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>Current alerts</h2>
+            <p>Five or more failed logins from the same IP within the last five minutes.</p>
+            <p class="note">Alerts use all events, regardless of the severity filter. Click Refresh to update them.</p>
+            <ul id="alert-list"></ul>
+        </section>
+
+        <section>
+            <h2>Add a test event</h2>
+            <form id="event-form">
+                <label>Source<input id="source" value="ssh" required maxlength="100"></label>
+                <label>IP address<input id="source-ip" value="198.51.100.42" required maxlength="45"></label>
+                <label>Event type
+                    <select id="event-type">
+                        <option value="login_failed">login_failed</option>
+                        <option value="login_success">login_success</option>
+                        <option value="connection_blocked">connection_blocked</option>
+                    </select>
+                </label>
+                <label>Severity
+                    <select id="severity">
+                        <option value="informational">Informational</option>
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </label>
+                <label>Message<input id="message" value="Failed login for alice" required maxlength="1000"></label>
+                <button id="add-button" type="submit">Add event</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>Learning project. Use synthetic logs on your own computer.</footer>
+</body>
+</html>

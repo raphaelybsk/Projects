@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+events.db
+events.db-journal
+events.db-wal
+events.db-shm
+LEARNING.md
