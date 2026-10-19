@@ -1,31 +1,24 @@
 [
     {
         "check": "Broken Authentication",
-        "endpoint": "/dashboard",
-        "vulnerable": false,
-        "status_code": 404
+        "endpoint": "/identity/api/v2/user/dashboard",
+        "outcome": "inconclusive",
+        "status_code": 404,
+        "details": "Unexpected response; this does not prove that authentication is secure."
     },
     {
         "check": "BOLA",
-        "endpoint": "/vehicle",
-        "vulnerable": true,
+        "endpoint": "/identity/api/v2/vehicle/00000000-0000-4000-8000-000000000002/location",
+        "outcome": "finding",
         "status_code": 200,
-        "details": {
-            "carId": "bf79c67d-aded-422c-9cb0-04f8091102aa",
-            "vehicleLocation": {
-                "id": 2,
-                "latitude": "31.284788",
-                "longitude": "-92.471176"
-            },
-            "fullName": "bubble two",
-            "email": "bubble2@gmail.com"
-        }
+        "details": "A different account received this vehicle's location. Confirm the accounts do not share access."
     },
     {
         "check": "Rate Limiting",
-        "endpoint": "/login",
-        "login attempts": 50,
-        "vulnerable": true,
-        "status_code": 401
+        "endpoint": "/identity/api/auth/login",
+        "outcome": "skipped",
+        "status_code": null,
+        "details": "Optional check. Use --rate-attempts 10 to enable it.",
+        "attempts_sent": 0
     }
 ]

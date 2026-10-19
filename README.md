@@ -8,10 +8,10 @@ Each project is designed to demonstrate a specific, real-world engineering probl
 
 ## Projects
 
-### 1. API Security Scanner
-**Stack:** FastAPI, React/TypeScript, Docker
+### 1. [API Security Scanner](./api-security-scanner)
+**Stack:** Python, requests, OWASP crAPI test lab
 
-A tool that scans REST and GraphQL/SOAP APIs for common security vulnerabilities, based on the OWASP API Security Top 10. Includes automated fuzzing (with ML-assisted payload generation), detection for BOLA/IDOR, broken authentication, and injection flaws, and generates structured vulnerability reports. Built with a FastAPI backend and a React dashboard for reviewing scan results.
+A beginner command-line tool that checks authentication and access to another user's vehicle in a local crAPI lab, with an optional rate-limit check. Uses two test accounts, compares responses with working baselines, and saves readable JSON reports. Includes offline tests and a guide explaining the code and its limitations.
 
 ### 2. Secrets Scanner
 **Stack:** Go
