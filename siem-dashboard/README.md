@@ -10,7 +10,7 @@ A small web application that stores security events and looks for repeated faile
 - Display the latest 100 matching events and filter them by severity.
 - Show an alert when one IP has five or more failed logins in the last five minutes.
 
-This is a small first version of a SIEM, not the complete system in the original project plan.
+This version focuses on local event storage, filtering, and a single failed-login detection rule.
 
 ## Requirements
 
@@ -69,7 +69,6 @@ siem-dashboard/
 │   ├── style.css       # Page appearance
 │   └── script.js       # Fetches data and updates the page
 ├── test_app.py         # Small backend tests
-├── LEARNING.md         # Explanations and study order
 ├── README.md
 └── .gitignore          # Generated files that Git should ignore
 ```
@@ -97,12 +96,12 @@ Beginner learning project with a working local dashboard. The code uses ordinary
 
 To keep this version small, it does not include authentication, network syslog receivers, React, charts, configurable rules, alert history, export, or external notifications. It listens only on `127.0.0.1`. Keep it on your own computer; it has no access control and is not intended for public deployment.
 
-Project possible improvements:
+Planned improvements:
 
 - Add a source-IP filter.
-- Change the failed-login threshold and explain the result.
+- Make the failed-login threshold configurable.
 - Add a second simple detection rule.
-- Add a small chart after understanding the table and JavaScript.
+- Add event-volume charts.
 
 ## Disclaimer
 

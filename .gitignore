@@ -1,1 +1,5 @@
 .DS_Store
+
+# Keep study guides and planning notes local; publish only README Markdown files.
+*.md
+!README.md

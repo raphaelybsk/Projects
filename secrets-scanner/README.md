@@ -18,20 +18,20 @@ Each finding reports the file, line, commit (for history scans) and the type of 
 
 ## Requirements
 
-- Go 1.22+
+- Go 1.27.2 or newer (as declared in `go.mod`)
 - Git installed and available in your `PATH` (needed for history scans)
 
 ## Setup
 
 ```bash
-git clone https://github.com/raphaelybsk/secrets-scanner.git
-cd secrets-scanner
+git clone https://github.com/raphaelybsk/Projects.git
+cd Projects/secrets-scanner
 go build -o secrets-scanner .
 ```
 
 ## Usage
 
-Planned interface:
+Run from the `secrets-scanner` directory:
 
 ```bash
 ./secrets-scanner --path ./some-repo            # scan current files
@@ -39,7 +39,7 @@ Planned interface:
 ./secrets-scanner --path ./some-repo --json report.json
 ```
 
-Target output format:
+Illustrative output format:
 
 ```
 === SECRETS REPORT ===
@@ -57,14 +57,16 @@ Leaked credentials in repositories are one of the most common causes of real-wor
 
 ## Status
 
-Early-stage learning project, currently in development. Scope for v1:
+Early-stage learning project. Currently implemented:
 
 - Directory scan with pattern rules
 - Entropy-based detection
 - Git history scan
 - Terminal report and JSON output
 
-Planned next steps: allowlist/baseline file to silence known false positives, pre-commit hook, and a GitHub Actions workflow.
+Known limitations: pattern and entropy checks can produce false positives and miss unknown secret formats. Git history scanning examines added diff lines returned by `git log -p --all`, rather than reconstructing every historical file. The tool does not validate whether credentials are active and does not implement SARIF output or a CI failure policy.
+
+Planned next steps: allowlist/baseline support, automated tests, pre-commit integration, and a GitHub Actions workflow.
 
 ## Disclaimer
 

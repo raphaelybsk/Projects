@@ -101,12 +101,9 @@ api-security-scanner/
 ├── requirements.txt     # One external dependency: requests
 ├── test_scanner.py      # Offline tests using fake responses
 ├── report.example.json  # Fictional sample report
-├── LEARNING.md          # Function-by-function explanation and exercises
 ├── README.md
 └── .gitignore           # Excludes generated reports and local files
 ```
-
-Start with [LEARNING.md](./LEARNING.md), then read `scanner.py` one function at a time.
 
 ## Tests
 
@@ -128,12 +125,12 @@ This is a small learning project. It tests one dashboard endpoint, one vehicle, 
 
 It does not crawl endpoints, discover every authorization rule, test SQL injection, refresh expired tokens, measure throttling delays, or store scan history. There is no web dashboard or database.
 
-Possible next exercises:
+Planned improvements:
 
 - Add a timestamp to the report.
 - Add an invalid-token authentication check.
-- Explain and test another unexpected HTTP response.
-- Add a simple web interface after you can explain the existing request flow.
+- Expand coverage for unexpected HTTP responses.
+- Add a simple web interface for reviewing results.
 
 ## Disclaimer
 
