@@ -1,8 +1,8 @@
-# Security & Systems Engineering Portfolio
+# Personal Software & Security Projects
 
-A collection of hands-on projects built to develop real engineering depth in application security, DevSecOps, and backend/systems programming, built while transitioning from a Computer Science degree into a cybersecurity career.
+Personal learning projects exploring API security, security monitoring and backend development.
 
-The projects cover API access control, accidental credential exposure, and basic security event monitoring. Each project includes setup instructions, usage examples, and its current limitations.
+Each project documents its current functionality, setup instructions and known limitations. These are educational implementations under development, not production-ready security tools.
 
 ---
 
